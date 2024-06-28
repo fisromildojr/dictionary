@@ -12,6 +12,5 @@ class Phonetics {
   factory Phonetics.fromJson(Map<String, dynamic> json) =>
       _$PhoneticsFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$PhoneticsToJson(this);
 }

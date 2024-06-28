@@ -16,6 +16,5 @@ class Meanings {
   factory Meanings.fromJson(Map<String, dynamic> json) =>
       _$MeaningsFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$MeaningsToJson(this);
 }

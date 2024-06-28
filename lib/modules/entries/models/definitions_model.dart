@@ -19,6 +19,5 @@ class Definitions {
   factory Definitions.fromJson(Map<String, dynamic> json) =>
       _$DefinitionsFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$DefinitionsToJson(this);
 }
