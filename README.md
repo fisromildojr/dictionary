@@ -55,4 +55,5 @@ This is a challenge by [Coodesh](https://coodesh.com/).
 
 ## Links
 - [Repositório no GitHub](https://github.com/fisromildojr/dictionary)
-- [Apresentação do Projeto](https://www.canva.com/design/DAGJbQ2PXlU/ryUgV3N4Gn5B9tcWPxlFFg/view?utm_content=DAGJbQ2PXlU&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+- [Apresentação do Projeto (Slide)](https://www.canva.com/design/DAGJbQ2PXlU/ryUgV3N4Gn5B9tcWPxlFFg/view?utm_content=DAGJbQ2PXlU&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+- [Apresentação do Projeto (Vídeo Demostrativo)](https://www.capcut.com/presentation/7386406798208630789?workspaceId=7313774332122251270&utm_source=share&utm_medium=product)
