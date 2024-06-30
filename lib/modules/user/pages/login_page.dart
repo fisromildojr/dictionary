@@ -1,11 +1,23 @@
+import 'package:dictionary/database/database.dart';
 import 'package:dictionary/modules/user/widgets/login_form.dart';
 import 'package:dictionary/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
   });
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    DatabaseHelper().database;
+  }
 
   @override
   Widget build(BuildContext context) {

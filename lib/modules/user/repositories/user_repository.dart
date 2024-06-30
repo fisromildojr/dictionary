@@ -6,12 +6,12 @@ class UserRepository {
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   Future<User?> save(User user) async {
+    final db = await databaseHelper.database;
     try {
-      final db = await databaseHelper.database;
-      await db.transaction((txn) async {
+      return await db.transaction((txn) async {
         int id = await txn.insert('users', user.toJson(),
             conflictAlgorithm: ConflictAlgorithm.abort);
-        return findById(id);
+        return findById(id, txn);
       });
     } catch (e) {
       rethrow;
@@ -19,8 +19,8 @@ class UserRepository {
   }
 
   Future<User?> login(String login, String password) async {
+    final db = await databaseHelper.database;
     try {
-      final db = await databaseHelper.database;
       final List<Map<String, dynamic>> maps = await db.query(
         'users',
         where: 'login = ? AND password = ?',
@@ -38,9 +38,8 @@ class UserRepository {
     }
   }
 
-  Future<User?> findById(int id) async {
-    final db = await databaseHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query(
+  Future<User?> findById(int id, Transaction txn) async {
+    final List<Map<String, dynamic>> maps = await txn.query(
       'users',
       where: 'id = ?',
       whereArgs: [id],

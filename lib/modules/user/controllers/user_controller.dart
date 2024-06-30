@@ -1,12 +1,19 @@
 import 'dart:developer';
 
+import 'package:dictionary/modules/entries/controllers/cache_controller.dart';
+import 'package:dictionary/modules/entries/controllers/entry_controller.dart';
+import 'package:dictionary/modules/entries/controllers/favorite_controller.dart';
 import 'package:dictionary/modules/user/models/user_model.dart';
 import 'package:dictionary/modules/user/services/user_service.dart';
 import 'package:dictionary/routes/route_names.dart';
+import 'package:dictionary/storage/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  final UserService _service;
+  UserController(this._service);
+
   final formMode = 'Login'.obs;
   final isLoading = false.obs;
   final nameController = TextEditingController();
@@ -22,7 +29,7 @@ class UserController extends GetxController {
           login: loginController.text,
           password: passwordController.text,
         );
-        User? newUser = await UserService().save(user);
+        User? newUser = await _service.save(user);
         if (newUser != null) {
           Get.offAllNamed(RouteHomePage);
         }
@@ -42,8 +49,8 @@ class UserController extends GetxController {
     try {
       isLoading(true);
       if (formKey.currentState?.validate() ?? false) {
-        if (await UserService()
-            .login(loginController.text, passwordController.text)) {
+        if (await _service.login(
+            loginController.text, passwordController.text)) {
           Get.offAllNamed(RouteHomePage);
         }
       }
@@ -62,8 +69,11 @@ class UserController extends GetxController {
   Future<void> logout() async {
     try {
       isLoading(true);
-      await Future.delayed(const Duration(seconds: 2));
+      AppStorage.instance.setUser(null);
       Get.offAllNamed(RouteLoginPage);
+      Get.find<EntryController>().entries.clear();
+      Get.find<CacheController>().entries.clear();
+      Get.find<FavoriteController>().entries.clear();
     } catch (e) {
       log(e.toString());
     } finally {

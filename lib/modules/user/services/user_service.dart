@@ -4,12 +4,14 @@ import 'package:dictionary/modules/user/services/crypto_service.dart';
 import 'package:dictionary/storage/app_storage.dart';
 
 class UserService {
+  UserRepository _repository = UserRepository();
+  UserService(this._repository);
   Future<User?> save(User user) async {
     try {
       user.password = CryptoService.encrypt(user.password!);
-      User? newUser = await UserRepository().save(user);
+      User? newUser = await _repository.save(user);
       if (newUser != null) {
-        AppStorage.instance.setUser(user);
+        AppStorage.instance.setUser(newUser);
       }
       return newUser;
     } catch (e) {
@@ -20,7 +22,7 @@ class UserService {
   Future<bool> login(String login, String password) async {
     try {
       User? loggedUser =
-          await UserRepository().login(login, CryptoService.encrypt(password));
+          await _repository.login(login, CryptoService.encrypt(password));
       if (loggedUser != null) {
         AppStorage.instance.setUser(loggedUser);
         return true;

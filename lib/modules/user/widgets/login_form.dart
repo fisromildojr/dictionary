@@ -10,6 +10,7 @@ class LoginForm extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
   final controller = Get.find<UserController>();
+  final _passwordVisible = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +76,7 @@ class LoginForm extends StatelessWidget {
                         ),
                         if (controller.formMode.value != 'Login')
                           TextFormField(
+                            key: const Key('nameField'),
                             autofocus: true,
                             controller: controller.nameController,
                             autofillHints: const [AutofillHints.name],
@@ -91,6 +93,7 @@ class LoginForm extends StatelessWidget {
                             height: 24,
                           ),
                         TextFormField(
+                          key: const Key('loginField'),
                           autofocus: true,
                           controller: controller.loginController,
                           autofillHints: const [AutofillHints.username],
@@ -105,41 +108,65 @@ class LoginForm extends StatelessWidget {
                         const SizedBox(
                           height: 24,
                         ),
-                        TextFormField(
-                          controller: controller.passwordController,
-                          autofillHints: const [AutofillHints.password],
-                          keyboardType: TextInputType.text,
-                          onFieldSubmitted: (_) async {
-                            await controller.login(formKey);
-                          },
-                          decoration: const InputDecoration(
-                            label: Text('Password'),
-                          ).applyDefaults(
-                            Theme.of(context).inputDecorationTheme,
-                          ),
-                          validator: Validatorless.required('Required'),
-                        ),
+                        Obx(() => TextFormField(
+                              key: const Key('passwordField'),
+                              controller: controller.passwordController,
+                              autofillHints: const [AutofillHints.password],
+                              keyboardType: TextInputType.text,
+                              obscureText: _passwordVisible.isFalse,
+                              onFieldSubmitted: (_) async {
+                                await controller.login(formKey);
+                              },
+                              decoration: InputDecoration(
+                                label: const Text('Password'),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _passwordVisible.isTrue
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    _passwordVisible(!_passwordVisible.value);
+                                  },
+                                ),
+                              ).applyDefaults(
+                                Theme.of(context).inputDecorationTheme,
+                              ),
+                              validator: Validatorless.required('Required'),
+                            )),
                         const SizedBox(
                           height: 24,
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            if (controller.formMode.value == 'Login') {
+                        if (controller.formMode.value == 'Login')
+                          ElevatedButton(
+                            key: const Key('loginButton'),
+                            onPressed: () async {
                               await controller.login(formKey);
-                            } else {
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                textStyle:
+                                    const TextStyle(color: Colors.white)),
+                            child: Text(controller.formMode.value),
+                          )
+                        else
+                          ElevatedButton(
+                            key: const Key('registerButton'),
+                            onPressed: () async {
                               await controller.register(formKey);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              textStyle: const TextStyle(color: Colors.white)),
-                          child: Text(controller.formMode.value),
-                        ),
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                textStyle:
+                                    const TextStyle(color: Colors.white)),
+                            child: Text(controller.formMode.value),
+                          ),
                         const SizedBox(
                           height: defaultPadding * 2,
                         ),
                         if (controller.formMode.value == 'Login')
                           Row(
+                            key: const Key('changeToRegister'),
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text('New here? '),
@@ -155,6 +182,7 @@ class LoginForm extends StatelessWidget {
                           )
                         else
                           Row(
+                            key: const Key('changeToLogin'),
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text('Already have a login? '),

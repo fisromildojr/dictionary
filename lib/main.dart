@@ -2,8 +2,10 @@ import 'package:dictionary/routes/app_pages.dart';
 import 'package:dictionary/routes/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }

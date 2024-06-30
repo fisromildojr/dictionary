@@ -41,6 +41,10 @@ class EntryService {
   }
 
   Future<List<Entry>> findFavoritePaginated(int currentPage, int lengthPage) {
-    return EntryRepository().findCachePaginated(currentPage, lengthPage);
+    return EntryRepository().findFavoritePaginated(currentPage, lengthPage);
+  }
+
+  Future<void> toggleFavorite(Entry entry) async {
+    return await EntryRepository().toggleFavorite(entry);
   }
 }

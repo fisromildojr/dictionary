@@ -1,6 +1,8 @@
 import 'package:dictionary/modules/entries/controllers/entry_controller.dart';
 import 'package:dictionary/modules/entries/pages/cache_list_page.dart';
 import 'package:dictionary/modules/entries/pages/entry_list_page.dart';
+import 'package:dictionary/modules/entries/pages/favorite_list_page.dart';
+import 'package:dictionary/modules/user/controllers/user_controller.dart';
 import 'package:dictionary/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +28,18 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Dictionary',
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => Get.find<UserController>().logout(),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Obx(
           () => Get.find<EntryController>().isLoadingSync.isTrue
@@ -86,7 +100,7 @@ class _HomePageState extends State<HomePage>
                             children: const [
                               EntryListPage(),
                               CacheListPage(),
-                              Text('Favorites'),
+                              FavoriteListPage(),
                             ]),
                       ),
                     )

@@ -1,7 +1,7 @@
 import 'package:dictionary/storage/app_storage.dart';
 
 String initialRoute =
-    AppStorage.instance.user == null ? RouteLoginPage : RouteHomePage;
+    AppStorage.instance.user != null ? RouteHomePage : RouteLoginPage;
 // String initialRoute = isAuthenticated() ? HomeRoute : LoginPageRoute;
 const String RouteLoginPage = '/login';
 const String RouteHomePage = '/home';

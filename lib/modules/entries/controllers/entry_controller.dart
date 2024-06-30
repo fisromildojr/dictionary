@@ -15,10 +15,10 @@ class EntryController extends GetxController {
   final isLoadingButtonSearch = false.obs;
   final isLoadingPage = false.obs;
   final entries = <Entry>[].obs;
+  final hasMoreItems = true.obs;
 
   @override
   void onInit() {
-    findAllPaginated();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -47,22 +47,28 @@ class EntryController extends GetxController {
   }
 
   Future<void> findAllPaginated() async {
-    try {
-      isLoadingPage(true);
-      var newEntries = await EntryService()
-          .findAllPaginated(currentPage.value, lengthPage.value);
-      currentPage.value++;
-      entries.addAll(newEntries);
-    } catch (e) {
-      log(e.toString());
-    } finally {
-      isLoadingPage(false);
+    if (!isLoadingPage.value && hasMoreItems.value) {
+      try {
+        isLoadingPage(true);
+        var newEntries = await EntryService()
+            .findAllPaginated(currentPage.value, lengthPage.value);
+
+        if (newEntries.length < lengthPage.value) {
+          hasMoreItems(false);
+        } else {
+          currentPage.value++;
+        }
+
+        entries.addAll(newEntries);
+      } catch (e) {
+        log(e.toString());
+      } finally {
+        isLoadingPage(false);
+      }
     }
   }
 
   showDetails(Entry entry) async {
-    var entryDB = await EntryService().findWord(entry.word!);
-    inspect(entryDB);
-    Get.toNamed(RouteEntryDetailsPage, arguments: entryDB);
+    Get.toNamed(RouteEntryDetailsPage, arguments: entry);
   }
 }

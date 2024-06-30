@@ -7,6 +7,7 @@ part of 'entry_model.dart';
 // **************************************************************************
 
 Entry _$EntryFromJson(Map<String, dynamic> json) => Entry(
+      id: (json['id'] as num?)?.toInt(),
       word: json['word'] as String?,
       phonetic: json['phonetic'] as String?,
       phonetics: (json['phonetics'] as List<dynamic>?)
@@ -16,7 +17,7 @@ Entry _$EntryFromJson(Map<String, dynamic> json) => Entry(
       meanings: (json['meanings'] as List<dynamic>?)
           ?.map((e) => Meanings.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..id = (json['id'] as num?)?.toInt();
+    );
 
 Map<String, dynamic> _$EntryToJson(Entry instance) => <String, dynamic>{
       'id': instance.id,
